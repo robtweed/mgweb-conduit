@@ -1,0 +1,102 @@
+[
+  {
+    "uri": "/api/ping",
+    "method": "GET",
+    "handler": "ping^conduitAPIs"
+  },
+  {
+    "uri": "/api/users/login",
+    "method": "POST",
+    "handler": "authenticateUser^conduitAPIs"
+  },
+  {
+    "uri": "/api/users",
+    "method": "POST",
+    "handler": "registerUser^conduitAPIs"
+  },
+  {
+    "uri": "/api/user",
+    "method": "GET",
+    "handler": "getUser^conduitAPIs"
+  },
+  {
+    "uri": "/api/user",
+    "method": "PUT",
+    "handler": "updateUser^conduitAPIs"
+  },
+  {
+    "uri": "/api/profiles/:username",
+    "method": "GET",
+    "handler": "getProfile^conduitAPIs"
+  },
+  {
+    "uri": "/api/profiles/:username/follow",
+    "method": "POST",
+    "handler": "follow^conduitAPIs"
+  },
+  {
+    "uri": "/api/profiles/:username/follow",
+    "method": "DELETE",
+    "handler": "unfollow^conduitAPIs"
+  },
+  {
+    "uri": "/api/articles",
+    "method": "GET",
+    "handler": "getArticlesList^conduitAPIs"
+  },
+  {
+    "uri": "/api/articles/feed",
+    "method": "GET",
+    "handler": "getArticlesFeed^conduitAPIs"
+  },
+  {
+    "uri": "/api/articles/:slug",
+    "method": "GET",
+    "handler": "getArticleBySlug^conduitAPIs"
+  },
+  {
+    "uri": "/api/articles",
+    "method": "POST",
+    "handler": "createArticle^conduitAPIs"
+  },
+  {
+    "uri": "/api/articles/:slug",
+    "method": "PUT",
+    "handler": "updateArticle^conduitAPIs"
+  },
+  {
+    "uri": "/api/articles/:slug",
+    "method": "DELETE",
+    "handler": "deleteArticle^conduitAPIs"
+  },
+  {
+    "uri": "/api/articles/:slug/comments",
+    "method": "POST",
+    "handler": "addComment^conduitAPIs"
+  },
+  {
+    "uri": "/api/articles/:slug/comments",
+    "method": "GET",
+    "handler": "getComments^conduitAPIs"
+  },
+  {
+    "uri": "/api/articles/:slug/comments/:id",
+    "method": "DELETE",
+    "handler": "deleteComment^conduitAPIs"
+  },
+  {
+    "uri": "/api/articles/:slug/favorite",
+    "method": "POST",
+    "handler": "favorite^conduitAPIs"
+  },
+  {
+    "uri": "/api/articles/:slug/favorite",
+    "method": "DELETE",
+    "handler": "unfavorite^conduitAPIs"
+  },
+  {
+    "uri": "/api/tags",
+    "method": "GET",
+    "handler": "getTags^conduitAPIs"
+  }
+]
