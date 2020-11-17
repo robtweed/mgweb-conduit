@@ -244,4 +244,3 @@ unfollow(userId,usernameToUnfollow,profile) ;
  i $$getProfile(idToUnfollow,userId,.profile)
  QUIT 1
  ;
-

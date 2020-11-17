@@ -24,7 +24,7 @@ conduitAPIs ; Conduit API handler functions
  ;|  limitations under the License.                                          |
  ;----------------------------------------------------------------------------
  ;
- ; 13 November 2020
+ ; 17 November 2020
  ;
  QUIT
  ;
@@ -95,7 +95,7 @@ authenticate(req,res) ;
   s payload=$$decodeJWT^%zmgwebJWT(jwtToken)
   i payload="" d  QUIT 0
   . s res("error")="Missing JWT Payload"
-  i $$parseJSON^%zmgwebUtils(payload,.claims,1)
+  i $$parseJSON^%zmgwebUtils(payload,.claims)
   i $g(claims("iss"))'=$$getIssuer^%zmgwebJWT() d  QUIT 0
   . s res("error")="Invalid JWT Issuer"
   i $g(claims("email"))="" d  QUIT 0
@@ -158,8 +158,10 @@ trace(text) ;
  ;
   ; ===========================
   ;
-ping() ;
- QUIT "{""pong"":true}"
+ping(req) ;
+ n json
+ s json="{""pong"":true}"
+ QUIT $$header^%zmgweb()_json
  ;
 getTags(req) ;
  ;
@@ -677,5 +679,4 @@ unfavorite(req) ;
  m results("article")=article
  s json=$$arrayToJSON^%zmgwebUtils("results")
  QUIT $$header^%zmgweb()_json
- ;
  ;
