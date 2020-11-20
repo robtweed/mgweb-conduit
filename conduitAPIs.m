@@ -24,7 +24,7 @@ conduitAPIs ; Conduit API handler functions
  ;|  limitations under the License.                                          |
  ;----------------------------------------------------------------------------
  ;
- ; 17 November 2020
+ ; 20 November 2020
  ;
  QUIT
  ;
@@ -159,9 +159,9 @@ trace(text) ;
   ; ===========================
   ;
 ping(req) ;
- n json
- s json="{""pong"":true}"
- QUIT $$header^%zmgweb()_json
+ n res
+ s res("pong")="true"
+ QUIT $$response^%zmgwebUtils(.res)
  ;
 getTags(req) ;
  ;
@@ -210,7 +210,7 @@ getArticlesList(req) ;
  ;
 registerUser(req) ;
  ;
- n email,errors,id,json,password,payload,requiredFields,results
+ n email,errors,id,password,payload,requiredFields,results
  n secret,user,username
  ;
  s requiredFields("username")=""
@@ -249,8 +249,7 @@ registerUser(req) ;
  ; now retrieve the user object with JWT
  ;
  i $$getUserData(id,.results)
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 getArticlesFeed(req) ;
  ;
@@ -272,18 +271,17 @@ getArticlesFeed(req) ;
  ;
 getUser(req) ;
  ;
- n errors,id,json,results
+ n errors,id,results
  ;
  s id=$$mustAuthenticate(.req,.errors)
  i $d(errors) QUIT $$errorResponse(.errors)
  ;
  i $$getUserData(id,.results)
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 getProfile(req) ;
  ;
- n byUserId,errors,json,ofUserId,profile,results,username
+ n byUserId,errors,ofUserId,profile,results,username
  ;
  s byUserId=$$checkAuthorization(.req,.errors)
  i $d(errors) QUIT $$errorResponse(.errors)
@@ -296,12 +294,11 @@ getProfile(req) ;
  s ofUserId=$$idByUsername^conduitUsers(username)
  i $$getProfile^conduitUsers(ofUserId,byUserId,.profile)
  m results("profile")=profile
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 authenticateUser(req) ;
  ;
- n email,errors,id,json,ok,password,requiredFields
+ n email,errors,id,ok,password,requiredFields
  ;
  ; check for body with non-empty email and password
  ;
@@ -320,12 +317,11 @@ authenticateUser(req) ;
  ;
  s id=$$idByEmail^conduitUsers(email)
  i $$getUserData(id,.results)
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 createArticle(req) ;
  ;
- n article,data,description,errors,id,json,requiredFields
+ n article,data,description,errors,id,requiredFields
  n results,title
  ;
  s id=$$mustAuthenticate(.req,.errors)
@@ -354,12 +350,11 @@ createArticle(req) ;
  ;
  i $$get^conduitArticles(articleId,id,.article)
  m results("article")=article
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 getArticleBySlug(req) ;
  ;
- n article,articleId,byUserId,errors,json,results,slug
+ n article,articleId,byUserId,errors,results,slug
  ;
  s byUserId=$$checkAuthorization(.req,.errors)
  i $d(errors) QUIT $$errorResponse(.errors)
@@ -373,8 +368,7 @@ getArticleBySlug(req) ;
  ;
  i $$get^conduitArticles(articleId,byUserId,.article)
  m results("article")=article
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 getComments(req) ;
  ;
@@ -403,7 +397,7 @@ getComments(req) ;
  ;
 addComment(req) ;
  ;
- n articleId,body,comment,commentId,errors,id,json
+ n articleId,body,comment,commentId,errors,id
  n requiredFields,results,slug
  ;
  s id=$$mustAuthenticate(.req,.errors)
@@ -425,8 +419,7 @@ addComment(req) ;
  i $$get^conduitComments(commentId,id,.comment)
  ;
  m results("comment")=comment
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 deleteComment(req) ;
  ;
@@ -457,7 +450,7 @@ deleteComment(req) ;
  ;
 updateArticle(req) ;
  ;
- n article,articleId,data,description,errors,id,json,requiredFields
+ n article,articleId,data,description,errors,id,requiredFields
  n results,slug,title
  ;
  s id=$$mustAuthenticate(.req,.errors)
@@ -496,8 +489,7 @@ updateArticle(req) ;
  ;
  i $$get^conduitArticles(articleId,id,.article)
  m results("article")=article
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 deleteArticle(req) ;
  ;
@@ -523,7 +515,7 @@ deleteArticle(req) ;
  ;
 updateUser(req) ;
  ;
- n email,errors,id,image,json,password,payload,requiredFields,results
+ n email,errors,id,image,password,payload,requiredFields,results
  n user,username
  ;
  s id=$$mustAuthenticate(.req,.errors)
@@ -583,12 +575,11 @@ updateUser(req) ;
  ; now retrieve the user object with JWT
  ;
  i $$getUserData(id,.results)
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 follow(req) ;
  ;
- n errors,id,json,profile,results,usernameToFollow
+ n errors,id,profile,results,usernameToFollow
  ;
  s id=$$mustAuthenticate(.req,.errors)
  i $d(errors) QUIT $$errorResponse(.errors)
@@ -607,12 +598,11 @@ follow(req) ;
  ;
  i $$follow^conduitUsers(id,usernameToFollow,.profile)
  m results("profile")=profile
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 unfollow(req) ;
  ;
- n errors,id,json,profile,results,usernameToUnfollow
+ n errors,id,profile,results,usernameToUnfollow
  ;
  s id=$$mustAuthenticate(.req,.errors)
  i $d(errors) QUIT $$errorResponse(.errors)
@@ -631,12 +621,11 @@ unfollow(req) ;
  ;
  i $$unfollow^conduitUsers(id,usernameToUnfollow,.profile)
  m results("profile")=profile
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 favorite(req) ;
  ;
- n article,articleId,errors,id,json,results,slug
+ n article,articleId,errors,id,results,slug
  ;
  s id=$$mustAuthenticate(.req,.errors)
  i $d(errors) QUIT $$errorResponse(.errors)
@@ -654,12 +643,11 @@ favorite(req) ;
  ;
  i $$get^conduitArticles(articleId,id,.article)
  m results("article")=article
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
 unfavorite(req) ;
  ;
- n article,articleId,errors,id,json,results,slug
+ n article,articleId,errors,id,results,slug
  ;
  s id=$$mustAuthenticate(.req,.errors)
  i $d(errors) QUIT $$errorResponse(.errors)
@@ -677,6 +665,5 @@ unfavorite(req) ;
  ;
  i $$get^conduitArticles(articleId,id,.article)
  m results("article")=article
- s json=$$arrayToJSON^%zmgwebUtils("results")
- QUIT $$header^%zmgweb()_json
+ QUIT $$response^%zmgwebUtils(.results)
  ;
