@@ -122,10 +122,56 @@ actual user name,eg:
 The handler function (*getProfile^conduitAPIs*)
 is shown below:
 
+        getProfile(req) ;
+         ;
+         n byUserId,errors,ofUserId,profile,results,username
+         ;
+         s byUserId=$$checkAuthorization(.req,.errors)
+         i $d(errors) QUIT $$errorResponse(.errors)
+         ;
+         i $g(req("params","username"))="" d  QUIT $$errorResponse(.errors)
+         . i $$addError("username","must be specified",.errors)
+         s username=req("params","username")
+         i '$$usernameExists^conduitUsers(username) QUIT $$notFound^%zmgweb()
+         ;
+         s ofUserId=$$idByUsername^conduitUsers(username)
+         i $$getProfile^conduitUsers(ofUserId,byUserId,.profile)
+         m results("profile")=profile
+         QUIT $$response^%zmgwebUtils(.results)
+         ;
+
+The *req* input argument contains 
+[parsed details](https://github.com/robtweed/mgweb-server#the-req-argument) 
+of the incoming request.
+
+The incoming JWT, if present, is first checked for validity and to confirm
+that it hasn't expired.  If OK, the user Id is extracted from the JWT. Take
+a look at the *checkAuthorization()* function in the *^conduitAPIs*
+routine to see how it works.  It makes use of a suite of JWT handling
+APIs that are included in the *mgweb-server* routines, so, for your
+own applications, simply re-use and adapt the code appropriately.
+
+The username that was specified in the *uri* path is then checked.  As
+you can see this is automatically made available to you by *mgweb-server* as:
+
+        req("params","username")
+
+If the username exists in the *^conduitUsers* global, the user's profile
+can then be retrieved:
+
+         i $$getProfile^conduitUsers(ofUserId,byUserId,.profile)
+
+After mapping into a *results* array which ensures the correct
+response format, the array is then converted to the
+corresponding JSON and returned along with the correctly-structured
+HTTP header:
+
+         QUIT $$response^%zmgwebUtils(.results)
 
 
-
-
-
+As you can see, all the low-level "plumbing" of *mg_web* is being handled
+by the *mgweb-server* APIs, leaving you to just focus on how each of your
+API handlers needs to work.  What they do and how they work is entirely up
+to you.
 
 
