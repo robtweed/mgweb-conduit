@@ -58,6 +58,67 @@ are compatible with and will run on the following database technologies:
 - [YottaDB](https://yottadb.com)
 
 
+# Installing and Running *mgweb-conduit* With the *mgweb-server* Docker Containers
+
+The quickest and simplest way to try out the *mgweb-conduit* respository
+is by using it in conjunction with one of the *mgweb-server* Docker
+Containers.
+
+Follow these steps:
+
+- You need to have Docker and *git* installed on your host system.
+
+- Decide where on your system you'll clone and install the *mgweb-conduit*
+repository.  I'm going to assume you'll put it under your home
+directory:
+
+        cd ~
+        git clone https://github.com/robtweed/mgweb-conduit
+
+Get the latest version of the *mgweb-server* Container:
+
+- Linux:
+
+        docker pull rtweed/mgweb
+
+- Raspberry Pi:
+
+        docker pull rtweed/mgweb-rpi
+
+Then start it up using:
+
+- Linux:
+
+        docker run -d --name conduit --rm -p 3000:8080 -v /home/ubuntu/mgweb-conduit:/opt/mgweb/mapped rtweed/mgweb
+
+- Raspberry Pi:
+
+        docker run -d --name conduit --rm -p 3000:8080 -v /home/pi/mgweb-conduit:/opt/mgweb/mapped rtweed/mgweb-rpi
+
+  Note: you can change:
+
+  - the container name (eg *conduit*) to whatever you like
+  - the listener port (eg 3000) to whatever you like
+
+  Change the host volume name containing the cloned
+  *mgweb-conduit* repository (eg /home/ubuntu/mgweb-conduit) to whatever 
+  is correct for your system
+
+The *mgweb-server* Container includes a pre-installed copy of the
+*mgWebComponents*-based RealWorld Client which you can use to run
+the RealWorld application against the *mgweb-conduit* REST back-end.
+
+Open a browser and enter the URL:
+
+        http://**.**.**.**:3000/conduit-wc
+
+        (replace **.**.**.** with the IP address or domain name of your server)
+
+It should all burst into life.  Begin by registering a new user, then add an article,
+add some comments.
+
+
+
 # *mgweb-conduit*'s Components
 
 *mgweb-conduit* is a typical example of how to create an
