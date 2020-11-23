@@ -1,0 +1,3 @@
+mkdir /opt/mgweb/mapped/ydb130
+cp /opt/yottadb/* /opt/mgweb/mapped/ydb130
+echo "YottaDB Global Directory files copied"

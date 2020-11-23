@@ -24,7 +24,7 @@ conduitAPIs ; Conduit API handler functions
  ;|  limitations under the License.                                          |
  ;----------------------------------------------------------------------------
  ;
- ; 20 November 2020
+ ; 22 November 2020
  ;
  QUIT
  ;
@@ -375,7 +375,6 @@ getComments(req) ;
  n articleId,byUserId,comments,errors,json,slug
  ;
  s byUserId=$$checkAuthorization(.req,.errors)
- s ^comments("byUserId")=byUserId
  i $d(errors) QUIT $$errorResponse(.errors)
  ;
  s slug=$g(req("params","slug"))
@@ -385,7 +384,6 @@ getComments(req) ;
  s articleId=$$getIdBySlug^conduitArticles(slug)
  i articleId="" QUIT $$notFound^%zmgweb()
  ;
- s ^comments("articleId")=articleId
  i $$byUser^conduitComments(byUserId,articleId,.comments)
  i '$d(comments) d
  . s json="{""comments"":[]}"
