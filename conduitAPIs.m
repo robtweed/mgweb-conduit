@@ -24,7 +24,7 @@ conduitAPIs ; Conduit API handler functions
  ;|  limitations under the License.                                          |
  ;----------------------------------------------------------------------------
  ;
- ; 22 November 2020
+ ; 23 November 2020
  ;
  QUIT
  ;
@@ -65,7 +65,6 @@ errorResponse(errors,statusCode) ;
   ;
   n crlf,header,json
   ;
-  m ^errors($h)=errors
   i '$d(statusCode) s statusCode=422
   s json=$$arrayToJSON^%zmgwebUtils("errors")
   s crlf=$c(13,10)
@@ -77,7 +76,6 @@ authenticate(req,res) ;
   ;
   n claims,failReason,id,jwtToken,payload,secret,valid
   ;
-  m ^auth("req")=req
   i '$d(req("headers","authorization")) d  QUIT 0
   . s res("error")="Missing authorization"
   ;
@@ -85,9 +83,7 @@ authenticate(req,res) ;
   i jwtToken="" d  QUIT 0
   . s res("error")="Missing JWT"
   ;
-  s ^auth("jwt")=jwtToken
   s secret=$$getJWTSecret^%zmgwebJWT()
-  s ^auth("secret")=secret
   s valid=$$authenticateJWT^%zmgwebJWT(jwtToken,secret,.failReason)
   i 'valid d  QUIT 0
   . s res("error")="Invalid JWT: "_failReason

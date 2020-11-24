@@ -1,7 +1,7 @@
 # mgweb-conduit: RealWorld Conduit Back-end based on *mg_web*
  
 Rob Tweed <rtweed@mgateway.com>
-20 November 2020, M/Gateway Developments Ltd [http://www.mgateway.com](http://www.mgateway.com)  
+24 November 2020, M/Gateway Developments Ltd [http://www.mgateway.com](http://www.mgateway.com)  
 
 Twitter: @rtweed
 
@@ -89,15 +89,15 @@ Then start it up using:
 
 - Linux:
 
-        docker run -d --name conduit --rm -p 3000:8080 -v /home/ubuntu/mgweb-conduit:/opt/mgweb/mapped rtweed/mgweb
+        docker run -d --name mgweb --rm -p 3000:8080 -v /home/ubuntu/mgweb-conduit:/opt/mgweb/mapped rtweed/mgweb
 
 - Raspberry Pi:
 
-        docker run -d --name conduit --rm -p 3000:8080 -v /home/pi/mgweb-conduit:/opt/mgweb/mapped rtweed/mgweb-rpi
+        docker run -d --name mgweb --rm -p 3000:8080 -v /home/pi/mgweb-conduit:/opt/mgweb/mapped rtweed/mgweb-rpi
 
   Note: you can change:
 
-  - the container name (eg *conduit*) to whatever you like
+  - the container name (eg *mgweb*) to whatever you like
   - the listener port (eg 3000) to whatever you like
 
   Change the host volume name containing the cloned
@@ -234,5 +234,3 @@ As you can see, all the low-level "plumbing" of *mg_web* is being handled
 by the *mgweb-server* APIs, leaving you to just focus on how each of your
 API handlers needs to work.  What they do and how they work is entirely up
 to you.
-
-
