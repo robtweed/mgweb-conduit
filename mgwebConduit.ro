@@ -1,6 +1,6 @@
-IRIS for Windows^MAC^mgweb-conduit routines^~Format=IRIS.S~^RAW
-%RO on 17 Nov 2020   9:00 AM
-conduitAPIs^MAC^^65700,32329.998334^0
+IRIS for Windows^MAC^mgweb-conduit back-end M routines^~Format=IRIS.S~^RAW
+%RO on 25 Nov 2020  10:00 AM
+conduitAPIs^MAC^^65707,64498.672444^0
 conduitAPIs ; Conduit API handler functions
  ;
  ;----------------------------------------------------------------------------
@@ -27,7 +27,7 @@ conduitAPIs ; Conduit API handler functions
  ;|  limitations under the License.                                          |
  ;----------------------------------------------------------------------------
  ;
- ; 22 November 2020
+ ; 23 November 2020
  ;
  QUIT
  ;
@@ -147,7 +147,7 @@ getUserData(id,results) ;
  m results("user")=user
  QUIT 1
   ;
-
+.
 trace(text) ;
  n id
  i '$d(text) s text=$h
@@ -664,7 +664,8 @@ unfavorite(req) ;
  m results("article")=article
  QUIT $$response^%zmgwebUtils(.results)
  ;
-conduitArticles^MAC^^65699,47011.75298^0
+
+conduitArticles^MAC^^65708,35736.956124^0
 conduitArticles ;
  ;
  ;----------------------------------------------------------------------------
@@ -1215,7 +1216,7 @@ rebuildIndices() ;
  ;
 .
 
-conduitComments^MAC^^65699,47073.264204^0
+conduitComments^MAC^^65708,35783.699131^0
 conduitComments ; Conduit Comments Database functions
  ;
  ;----------------------------------------------------------------------------
@@ -1326,7 +1327,7 @@ byUser(userId,articleId,comments) ;
  ;
 .
 
-conduitUsers^MAC^^65699,47160.363421^0
+conduitUsers^MAC^^65708,35818.980007^0
 conduitUsers ; Conduit Users Database functions
  ;
  ;----------------------------------------------------------------------------
@@ -1573,7 +1574,6 @@ unfollow(userId,usernameToUnfollow,profile) ;
  i $$getProfile(idToUnfollow,userId,.profile)
  QUIT 1
  ;
-.
 .
 
 
