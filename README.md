@@ -278,7 +278,8 @@ in the IRIS Container!
 
 
 If you want to set up a non-Dockerised IRIS system, take a look at the
-*conduit_install_iris.txt* ObjectScript file.  Basically you just need to
+[*conduit_install_iris.txt*](https://github.com/robtweed/mgweb-conduit/blob/master/conduit_install_iris.txt)
+ ObjectScript file.  Basically you just need to
 install the *mgweb-conduit* routines from the *conduitAPIs.ro* file, and
 then run the configuration steps to build the REST API routes global and set
 the JWT Issuer value.
