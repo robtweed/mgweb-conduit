@@ -234,3 +234,78 @@ As you can see, all the low-level "plumbing" of *mg_web* is being handled
 by the *mgweb-server* APIs, leaving you to just focus on how each of your
 API handlers needs to work.  What they do and how they work is entirely up
 to you.
+
+----------
+
+# Setting up *mgweb-conduit* on an IRIS System
+
+It's easiest to describe how to set up the IRIS Community Edition
+Docker Container for use with *mgweb-server*.  Once you understand how it's
+done, you can manually perform the equivalent installation steps on any 
+non-Dockerised IRIS system.
+
+1) Ensure that you've installed and set up *mg_web* and *mgweb-server*
+on your IRIS system.  Read the 
+[instructions here](https://github.com/robtweed/mgweb-server#using-the-mgweb-server-container-with-iris).
+
+
+2) Clone the *mgweb-conduit* repository on your host system
+
+Clone this into the same host directory that you used for *mgweb-server* and *mgsi*.
+
+For example:
+
+
+        cd ~/mgweb
+        git clone https://github.com/robtweed/mgweb-conduit
+
+I'll assume you've already started the IRIS container, mapping the host *mgweb* directory
+to the Container's */home/irisowner/mgweb* directory.
+
+3) Shell into the IRIS Container:
+
+        docker exec -it my-iris bash
+
+4) Run the ObjectScript installation script:
+
+        iris session IRIS < mgweb/mgweb-conduit/conduit_install_iris.txt
+
+*mgweb-conduit* will now be ready to use.
+
+Now, when you send REST requests to Apache running on your *mgweb-server* Container,
+they will be serviced by the *mgweb-server* and *mgweb-conduit* routines running
+in the IRIS Container!
+
+
+If you want to set up a non-Dockerised IRIS system, take a look at the
+*conduit_install_iris.txt* ObjectScript file.  Basically you just need to
+install the *mgweb-conduit* routines from the *conduitAPIs.ro* file, and
+then run the configuration steps to build the REST API routes global and set
+the JWT Issuer value.
+
+
+
+----------------
+# License
+
+ Copyright (c) 2020 M/Gateway Developments Ltd,                           
+ Redhill, Surrey UK.                                                      
+ All rights reserved.                                                     
+                                                                           
+  http://www.mgateway.com                                                  
+  Email: rtweed@mgateway.com                                               
+                                                                           
+                                                                           
+  Licensed under the Apache License, Version 2.0 (the "License");          
+  you may not use this file except in compliance with the License.         
+  You may obtain a copy of the License at                                  
+                                                                           
+      http://www.apache.org/licenses/LICENSE-2.0                           
+                                                                           
+  Unless required by applicable law or agreed to in writing, software      
+  distributed under the License is distributed on an "AS IS" BASIS,        
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+  See the License for the specific language governing permissions and      
+   limitations under the License.      
+
+
