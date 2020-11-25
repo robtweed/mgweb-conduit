@@ -1,4 +1,5 @@
 d $system.OBJ.Load("/home/irisowner/mgweb/mgweb-conduit/mgwebConduit.ro","ck")
 i $$buildAPIs^%zmgwebUtils("/home/irisowner/mgweb/mgweb-conduit/routes.json")
 i $$setJWTIssuer^%zmgwebUtils("/home/irisowner/mgweb/mgweb-conduit/config.json")
+w "mgweb-conduit has been installed, configured and is ready to run",!
 h
