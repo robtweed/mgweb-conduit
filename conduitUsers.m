@@ -24,7 +24,7 @@ conduitUsers ; Conduit Users Database functions
  ;|  limitations under the License.                                          |
  ;----------------------------------------------------------------------------
  ;
- ; 13 November 2020
+ ; 2 December 2020
  ;
 getTimeStamp(results) ;
  ;
@@ -38,37 +38,6 @@ getTimeStamp(results) ;
  s results("iso")=iso
  s results("ts")=ts
  QUIT 1
- ;
-hashPassword(password) ;
- ;
- n hash
- ;
- i $zv["GT.M" d
- . s hash=$$bcryptHash^%zmgwebUtils(password)
- e  d
- . n salt
- . s salt=##class(%SYSTEM.Encryption).GenCryptRand(32)
- . s hash=##class(%SYSTEM.Encryption).PBKDF2(password,20,salt,32,512)
- . s hash=##class(%SYSTEM.Encryption).Base64Encode(salt)_"$32$"_##class(%SYSTEM.Encryption).Base64Encode(hash)
- ;
- QUIT hash
- ;
-verifyPassword(password,hash) ;
- ;
- n ok
- ;
- i $zv["GT.M" d
- . s ok=$$bcryptCompare^%zmgwebUtils(password,hash)
- e  d
- . n hash2,salt
- . s salt=$p(hash,"$32$",1)
- . s hash=$p(hash,"$32$",2) 
- . s salt=##class(%SYSTEM.Encryption).Base64Decode(salt)
- . s hash2=##class(%SYSTEM.Encryption).PBKDF2(password,20,salt,32,512)
- . s hash2=##class(%SYSTEM.Encryption).Base64Encode(hash2)
- . s ok=(hash=hash2)
- ;
- QUIT ok
  ;
  ; ==========================
  ;
@@ -117,7 +86,7 @@ authenticate(email,password) ;
  . n hash,id
  . s id=$$idByEmail(email)
  . s hash=$g(^conduitUsers("byId",id,"password"))
- . s ok=$$verifyPassword(password,hash)
+ . s ok=$$verifyPassword^%zmgwebUtils(password,hash)
  QUIT 0
  ;
 get(id,user) ;
@@ -146,7 +115,7 @@ create(user) ;
  s user("createdAt")=now
  s user("updatedAt")=now
  s password=$g(user("password"))
- s hash=$$hashPassword(password)
+ s hash=$$hashPassword^%zmgwebUtils(password)
  s user("password")=hash
  s user("bio")=""
  s user("image")=""
@@ -166,7 +135,7 @@ update(id,newData) ;
  i $d(newData("email")) s ok=$$changeEmail(id,newData("email"))
  i $d(newData("username")) s ok=$$changeUsername(id,newData("username"))
  i $g(newData("password"))'="" d
- . s ^conduitUsers("byId",id,"password")=$$hashPassword(newData("password"))
+ . s ^conduitUsers("byId",id,"password")=$$hashPassword^%zmgwebUtils(newData("password"))
  i $d(newData("image")) s ^conduitUsers("byId",id,"image")=newData("image")
  i $d(newData("bio")) s ^conduitUsers("byId",id,"bio")=newData("bio")
  s ^conduitUsers("byId",id,"updatedAt")=$$UTCDateTime^%zmgwebUtils($$now^%zmgwebUtils()) 
